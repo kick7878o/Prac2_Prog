@@ -16,4 +16,6 @@ public class LlistaNivellsAigua {
     */
    public int getElem() { return nElem; }
 
+
+   
 }

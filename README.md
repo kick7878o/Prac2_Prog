@@ -1,27 +1,25 @@
 # Prac2_Prog
+
 Practica 2 de programación de la URV (Universitat Rovira y Virgili)
 
 LEER ESTA LÍNEA OBLIGAORIA: PARA QUE SE VEA CORRECTAMENTE MIRADLO COM SI FUERA UN CÓDIGO (CODE)
 
 --- Análisis de la cantidad de agua en las presas ---
+
 - OBJETIVO:
   Diseñar una app que permita hacer consultas sobre estos datos.
 
-  
 - FICHERO '.csv' CON DATOS:
   1. La primera línea es la cabecera contiene la estructura general de los datos que son:
        Dia,Nombre Presa (Poblacion),Provincia,Nivel absoluto (msnm),Porcentaje Volumen ocupado (%),Volumen ocupado (hm3)
-     
+
   2. El resto son los datos separados por comas ',' y, junto al nombre de la presa, entre paréntesis, tenemos la población en que está.
 
- 
 - ESPECIFICACIONES DEL PROGRAMA:
   1. Se nos proporciona un proyecto inicial, con la clase 'NivellAigua' (NO modificar excepto añadir los JavaDocs) y una primera versión del main.
 
- 
   2. Crear una nueva clase llamada 'LlistaNivellsAigua' para guardar en una lista de instancias de la clase 'NivellAigua'.
              ¡¡ NO SE PUEDE USAR LAS ESTRUCTURAS PREDEFINIDAS DE JAVA !!
-
 
   3. 'LlistaNivellsAigua' ha de contener:
      3a. Básico:
@@ -50,8 +48,7 @@ LEER ESTA LÍNEA OBLIGAORIA: PARA QUE SE VEA CORRECTAMENTE MIRADLO COM SI FUERA 
        3c2. ¿'3b9' a qué se refiere?
          3c21. Opción 1: Dado el nombre de la presa, ¿eliminar todas las posiciones que contenga ese nombre?
 
-
-    4. Programa principal:
+  4. Programa principal:
        4a. Versión 1:
          4a1. Permite leer un nombre de líneas determinado.
 
@@ -72,9 +69,7 @@ LEER ESTA LÍNEA OBLIGAORIA: PARA QUE SE VEA CORRECTAMENTE MIRADLO COM SI FUERA 
                  4b391. Orden para eliminar: Mostrar datos de la provincia > llamamos a la operación de eliminar > mostrar datos de la provincia (debe de estar vacío).
              4b3(10). Salir del programa.
 
-
-    5. Formato de entrega:
+  5. Formato de entrega:
        5a. Fichero comprimido llamado: nom1Cognom1_nom2Cognom2_prac2.zip
-
 
 NOTA OBTENIDA: XX/10

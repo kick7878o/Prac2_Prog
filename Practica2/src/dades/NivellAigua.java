@@ -40,7 +40,7 @@ public class NivellAigua {
 		return (poblacio.equalsIgnoreCase(this.poblacio));
 	}
 	
-	/** Metodo que comprueba si la poblacion dada por parametro
+	/** Metodo que comprueba si la provincia dada por parametro
 	 * es la misma que hay en dicha instancia.
 	 * 
 	 * @param provincia
@@ -50,7 +50,7 @@ public class NivellAigua {
 		return (provincia.equalsIgnoreCase(this.provincia));
 	}
 
-	/** Metodo que comprueba que la fecha de la medida esté
+	/** Metodo que comprueba que la fecha de la medida está
 	 * entre las fechas dados por parametro
 	 * @param d1
 	 * @param d2
