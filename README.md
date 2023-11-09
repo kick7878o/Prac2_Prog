@@ -11,7 +11,7 @@ LEER ESTA LÍNEA OBLIGAORIA: PARA QUE SE VEA CORRECTAMENTE MIRADLO COM SI FUERA 
 
 - FICHERO '.csv' CON DATOS:
   1. La primera línea es la cabecera contiene la estructura general de los datos que son:
-       Dia,Nombre Presa (Poblacion),Provincia,Nivel absoluto (msnm),Porcentaje Volumen ocupado (%),Volumen ocupado (hm3)
+       Dia,Nombre Presa (Poblacion),Provincia,Nivel absoluto,Porcentaje Volumen ocupado,Volumen ocupado
 
   2. El resto son los datos separados por comas ',' y, junto al nombre de la presa, entre paréntesis, tenemos la población en que está.
 
