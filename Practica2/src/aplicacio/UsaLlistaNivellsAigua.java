@@ -58,6 +58,13 @@ public class UsaLlistaNivellsAigua {
 
 	
 
+	/** Metodo privado que lee un determinado numero de lineas del fichero.
+	 * Si se pasa, se le asignara el numero maximo o minimo
+	 * 
+	 * @param nLinies
+	 * @return Las lineas leídas del fichero
+	 * @throws FileNotFoundException
+	 */
 	private static String[] llegirLiniesFitxer(int nLinies) throws FileNotFoundException {
 		String[] result;
 		if (nLinies < 0)
