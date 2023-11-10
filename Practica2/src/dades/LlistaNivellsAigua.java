@@ -86,9 +86,7 @@ public class LlistaNivellsAigua {
     * @return cadena con todos los datos de la lista
     */
    public String toString() {
-      String aux;
-
-      aux = "Lista medidas => Elementos: " +nElem;
+      String aux = "Lista medidas => Elementos: " +nElem;
 
       for (int i=0; i < nElem; i++) {
          aux += "\n\t[" +i+ "] " +listaLvl[i];
