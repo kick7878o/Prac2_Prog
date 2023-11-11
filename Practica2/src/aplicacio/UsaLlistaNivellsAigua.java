@@ -14,7 +14,7 @@ public class UsaLlistaNivellsAigua {
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println("Indica el número de línies a llegir del fitxer (màxim 78282)");
 		int numLinies = Integer.parseInt(teclat.nextLine());
-		String[] dataset = llegirLiniesFitxer(numLinies);
+		LlistaNivellsAigua dataset = llegirLiniesFitxer(numLinies);
 
 		// mostrem el contingut que hem llegit. Això ho eliminarem en les
 		// versions finals del codi
@@ -65,19 +65,18 @@ public class UsaLlistaNivellsAigua {
 	 * @return Las lineas leídas del fichero
 	 * @throws FileNotFoundException
 	 */
-	private static String[] llegirLiniesFitxer(int nLinies) throws FileNotFoundException {
-		String[] result;
+	private static LlistaNivellsAigua llegirLiniesFitxer(int nLinies) throws FileNotFoundException {
+		LlistaNivellsAigua result;
 		if (nLinies < 0)
 			nLinies = 0;
 		if (nLinies > 78282)
 			nLinies = 78282;
-		result = new String[nLinies];
+		result = new LlistaNivellsAigua(nLinies);
 		Scanner f = new Scanner(new File("Quantitat_aigua_embassaments_20231025.csv"));
 
 		String capcalera = f.nextLine();
 		System.out.println("El format de les dades en cada línia és el següent\n" + capcalera);
 		for (int i = 0; i < nLinies; i++) {
-			//result[i] = f.nextLine();
 			String linia = f.nextLine();
 			String[] camps = linia.split(",");
 			
@@ -99,7 +98,7 @@ public class UsaLlistaNivellsAigua {
 
 			NivellAigua nivell = new NivellAigua(data, nomEmb, poblacio, provincia, nivellAbs, percentatgeVolum, volum);
 
-			//result[i].afegirDadesMesura(nivell);
+			result.afegirDadesMesura(nivell);
 		}
 		f.close();
 		return result;
@@ -120,60 +119,124 @@ public class UsaLlistaNivellsAigua {
 		System.out.println("\n\t\t\tIndica opcio:\n");
 	}
 
-	public static void opcio1(String[] dataset) {
-		for (int i = 0; i < dataset.length; i++) {
-			System.out.println("Linia " + (i + 1) + " conté " + dataset[i]);
+	private static Data convertirAData(String dataString){
+		String[] dataStringSplit = dataString.split("/");
+		int dia = Integer.parseInt(dataStringSplit[0]);
+		int mes = Integer.parseInt(dataStringSplit[1]);
+		int any = Integer.parseInt(dataStringSplit[2]);
+
+		return new Data(dia, mes, any);
+	}
+
+	public static void opcio1(LlistaNivellsAigua dataset) {
+		System.out.println("Mesures de la llista:");
+		System.out.println(dataset);
+	}
+
+	public static void opcio2(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de la provincia");
+		String nomProvincia = teclat.nextLine();
+		System.out.println("\tIndica data 1 (format: dia/mes/any)");
+		String inputData1 = teclat.nextLine();
+		Data data1 = convertirAData(inputData1);
+		System.out.println("\tIndica data 2 (format: dia/mes/any)");
+		String inputData2 = teclat.nextLine();
+		Data data2 = convertirAData(inputData2);
+		LlistaNivellsAigua a;
+		a = dataset.consultaPorProvincia(nomProvincia.trim())
+				.consultaPorFechas(data1, data2);
+		System.out.println(a);
+	}
+
+	public static void opcio3(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de l'embassament");
+		String nomEmbassament = teclat.nextLine();
+		System.out.println("Primera mesura de" + nomEmbassament + ":" + dataset.primeraMesura(nomEmbassament.trim()));
+	}
+
+	public static void opcio4(LlistaNivellsAigua dataset) {
+		NivellAigua tarragona = dataset.consultaPorProvincia("Tarragona")
+					.copiaPorcentajeMasAlto();
+    	NivellAigua barcelona = dataset.consultaPorProvincia("Barcelona")
+					.copiaPorcentajeMasAlto();
+    	NivellAigua lleida = dataset.consultaPorProvincia("Lleida")
+					.copiaPorcentajeMasAlto();
+    	NivellAigua girona = dataset.consultaPorProvincia("Girona")
+					.copiaPorcentajeMasAlto();
+
+    	System.out.println("Percentatge de volum més alt per provincia:");
+    	System.out.println("Tarragona: " + tarragona);
+    	System.out.println("Barcelona: " + barcelona);
+    	System.out.println("Lleida: " + lleida);
+    	System.out.println("Girona: " + girona);
+
+		//falta ver si son del mismo año
+	}
+
+	public static void opcio5(LlistaNivellsAigua dataset) {
+		NivellAigua percentMesBaix = dataset.copiaPorcentajeMasBajo();
+		System.out.println("Mesura amb percentatge de volum mes baix:" + percentMesBaix);
+	}
+
+	public static void opcio6(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de la provincia");
+		String nomProvincia = teclat.nextLine();
+		LlistaNivellsAigua opcioSis;
+		opcioSis = dataset.consultaPorProvincia(nomProvincia.trim());
+		System.out.println("Hi han dades de" + opcioSis.getElem() + "elements de" + nomProvincia);
+		System.out.println("Nom dels embassaments:");
+		for(int i = 0; i < opcioSis.getElem(); i++) {
+			NivellAigua mesura;
+			//System.out.println(.getNomEmbassament);
 		}
 	}
 
-	public static void opcio2(String[] dataset) {
-		System.out.println("\tIndica el nom de la provincia");
-		String nomProvincia = teclat.nextLine();
-		System.out.println("\tIndica data 1");
-		String inputData1 = teclat.nextLine();
-		String[] inputData1Split = inputData1.split("/");
-		int dia1 = Integer.parseInt(inputData1Split[0]);
-		int mes1 = Integer.parseInt(inputData1Split[1]);
-		int any1 = Integer.parseInt(inputData1Split[2]);
-		Data data1 = new Data(dia1, mes1, any1);
-		System.out.println("\tIndica data 2");
-		String inputData2 = teclat.nextLine();
-		String[] inputData2Split = inputData2.split("/");
-		int dia2 = Integer.parseInt(inputData2Split[0]);
-		int mes2 = Integer.parseInt(inputData2Split[1]);
-		int any2 = Integer.parseInt(inputData2Split[2]);
-		Data data2 = new Data(dia2, mes2, any2);
-		//dataset.consultaPorProvincia(nomProvincia);
+	public static void opcio7(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica l'any (format: any)");
+    	int any = Integer.parseInt(teclat.nextLine());
+
+    	System.out.println("\tIndica el nom de la primera província");
+    	String provincia1 = teclat.nextLine();
+    	System.out.println("\tIndica el nom de la segona província");
+    	String provincia2 = teclat.nextLine();
+
+		Data dataInici = new Data(1, 1, any);
+    	Data dataFi = new Data(31, 12, any);
+
+		LlistaNivellsAigua mesuresProvincia1 = dataset.consultaPorFechas(dataInici, dataFi)
+                                    .consultaPorProvincia(provincia1.trim());
+		LlistaNivellsAigua mesuresProvincia2 = dataset.consultaPorFechas(dataInici, dataFi)
+                                    .consultaPorProvincia(provincia2.trim());
+
+    	double volumMaxProvincia1 = mesuresProvincia1.copiaVolumenMasAlto().getVolum();
+    	double volumMaxProvincia2 = mesuresProvincia2.copiaVolumenMasAlto().getVolum();
+
+		String provinciaAmbVolumMesAlt;
+    	if (volumMaxProvincia1 > volumMaxProvincia2) {
+        	provinciaAmbVolumMesAlt = provincia1;
+    	} else {
+        	provinciaAmbVolumMesAlt = provincia2;
+    	}
+		
+		System.out.println("Per l'any " + any + ":");
+    	System.out.println("A " + provincia1 + ", volum màxim: " + volumMaxProvincia1);
+    	System.out.println("A " + provincia2 + ", volum màxim: " + volumMaxProvincia2);
+    	System.out.println("La província amb el volum més alt és: " + provinciaAmbVolumMesAlt);
 	}
 
-	public static void opcio3(String[] dataset) {
-		System.out.println("\tIndica el nom de l'embassament");
-		String nomEmbassament = teclat.nextLine();
-		//dataset.primeraMesura(nomEmbassament);
+	public static void opcio8(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica la primera data (format: dia/mes/any)");
+    	String inputdata1 = teclat.nextLine();
+    	Data data1 = convertirAData(inputdata1);
+
+    	System.out.println("\tIndica la segona data (format: dia/mes/any)");
+    	String inputdata2 = teclat.nextLine();
+    	Data data2 = convertirAData(inputdata2);
+    	LlistaNivellsAigua mesuresPeriode = dataset.consultaPorFechas(data1, data2);
+		System.out.println(mesuresPeriode);
 	}
 
-	public static void opcio4(String[] dataset) {
-		System.out.println("\t");
-	}
-
-	public static void opcio5(String[] dataset) {
-
-	}
-
-	public static void opcio6(String[] dataset) {
-		System.out.println("\tIndica el nom de la provincia");
-		String nomProvincia = teclat.nextLine();
-	}
-
-	public static void opcio7(String[] dataset) {
-
-	}
-
-	public static void opcio8(String[] dataset) {
-
-	}
-
-	public static void opcio9(String[] dataset) {
+	public static void opcio9(LlistaNivellsAigua dataset) {
 
 	}
 
