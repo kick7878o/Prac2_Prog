@@ -142,7 +142,7 @@ public class LlistaNivellsAigua {
    public LlistaNivellsAigua consultaPorFechas(Data d1, Data d2) {
       LlistaNivellsAigua aux = new LlistaNivellsAigua(nElem); // Nova llista
 
-      // Iteramos buscando estan entre las fechas
+      // Iteramos buscando si estan entre las fechas
       for (int i=0; i < nElem; i++) {
          if (listaLvl[i].esTrobaEnAquestPeriode(d1, d2))
             aux.afegirDadesMesura(listaLvl[i].copia());

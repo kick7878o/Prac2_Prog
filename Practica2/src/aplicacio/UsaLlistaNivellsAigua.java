@@ -3,9 +3,6 @@ package aplicacio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
-
 import dades.*;
 
 public class UsaLlistaNivellsAigua {
@@ -16,109 +13,111 @@ public class UsaLlistaNivellsAigua {
 		int numLinies = Integer.parseInt(teclat.nextLine());
 		LlistaNivellsAigua dataset = llegirLiniesFitxer(numLinies);
 
-		// mostrem el contingut que hem llegit. Això ho eliminarem en les
-		// versions finals del codi
-
-		// Completar el codi a partir d'aquí
+		/** ELIMINAR LUEGO
+		 * Concepto para mostrar correctamente el menú (todo dentro del bucle)
+		 * 1. Se muestra el menú y esperamos valor
+		 * 2. Seleccionamos la opcion y hacemos las operaciones
+		 * 3. Mostramos menú
+		 */
 		mostraMenu();
-		int opcio = Integer.parseInt(teclat.nextLine());
-		while (opcio != 10) {
+		int opcio = Integer.parseInt(teclat.next());
+		
+		do {
 			switch (opcio) {
-			case 1:
-				opcio1(dataset);
-				break;
-			case 2:
-				opcio2(dataset);
-				break;
-			case 3:
-				opcio3(dataset);
-				break;
-			case 4:
-				opcio4(dataset);
-				break;
-			case 5:
-				opcio5(dataset);
-				break;
-			case 6:
-				opcio6(dataset);
-				break;
-			case 7:
-				opcio7(dataset);
-				break;
-			case 8:
-				opcio8(dataset);
-				break;
-			case 9:
-				opcio9(dataset);
-				break;
+				case 1: opcio1(dataset); break;
+				case 2: opcio2(dataset); break;
+				case 3: opcio3(dataset); break;
+				case 4: opcio4(dataset); break;
+				case 5: opcio5(dataset); break;
+				case 6: opcio6(dataset); break;
+				case 7: opcio7(dataset); break;
+				case 8: opcio8(dataset); break;
+				case 9: opcio9(dataset); break;
+				case 10: exit(); break;
 			}
-		}
+		} while (opcio != 10);
 
 	}
 
-	
+	// Metodo que indica que salidmos del programa.
+	private static void exit() {
+		System.out.println("\n\n===================== ¡PROGRAMA FINALIZADO! =====================\n");
+	}
 
-	/** Metodo privado que lee un determinado numero de lineas del fichero.
+	/** Metodo privado que lee un determinado numero de lineas del fichero y las procesa.
 	 * Si se pasa, se le asignara el numero maximo o minimo
 	 * 
 	 * @param nLinies
-	 * @return Las lineas leídas del fichero
-	 * @throws FileNotFoundException
+	 * @return Las lineas leídas y procesadas del fichero
+	 * @throws FileNotFoundException si no se encuentra el fichero saltara este error
 	 */
 	private static LlistaNivellsAigua llegirLiniesFitxer(int nLinies) throws FileNotFoundException {
-		LlistaNivellsAigua result;
-		if (nLinies < 0)
-			nLinies = 0;
-		if (nLinies > 78282)
-			nLinies = 78282;
-		result = new LlistaNivellsAigua(nLinies);
+		// Aqui guardamos las lineas procesadas
+		LlistaNivellsAigua result = new LlistaNivellsAigua(nLinies);
+
+		// Si lo introducido no está dentro del rango, definimos el minimo o maximo automaticamente
+		if (nLinies < 0) nLinies = 0;
+		if (nLinies > 78282) nLinies = 78282;
+
+		// Leemos el fichero
 		Scanner f = new Scanner(new File("Quantitat_aigua_embassaments_20231025.csv"));
 
-		String capcalera = f.nextLine();
-		System.out.println("El format de les dades en cada línia és el següent\n" + capcalera);
+		String capcalera = f.nextLine(); // Saltamos la primera línea
+
+		System.out.println("El format de les dades en cada línia és el següent:\n" +capcalera);
 		for (int i = 0; i < nLinies; i++) {
-			String linia = f.nextLine();
-			String[] camps = linia.split(",");
+			String linia = f.nextLine(); // Leemos línea a línea
+			String[] camps = linia.split(","); // Separamos los campos con coma ','
 			
-			//Procesar los campos
-			String dataString = camps[0];
-			String[] dataSplit = dataString.split("/");
-			int dia = Integer.parseInt(dataSplit[0]);
-			int mes = Integer.parseInt(dataSplit[1]);
-			int any = Integer.parseInt(dataSplit[2]);
-			Data data = new Data(dia, mes, any);
-			String nomEmbPobl = camps[1];
-			String[] EmbPoblSplit = nomEmbPobl.split("\\(");
-			String nomEmb = EmbPoblSplit[0].trim();
-			String poblacio = EmbPoblSplit[1].replace(")", "").trim();
-			String provincia = camps[2];
-			double nivellAbs = Double.parseDouble(camps[3]);
-			double percentatgeVolum = Double.parseDouble(camps[4]);
-			double volum = Double.parseDouble(camps[5]);
+			// Procesamos la fecha. FORMATO: DD/MM/AAAA
+			String fechaNoProcesado = camps[0]; // Obtenemos el campo de la fecha sin separar
+			String[] dataSplit = fechaNoProcesado.split("/"); // Separamos la fecha con barra '/'
+			int dia = Integer.parseInt(dataSplit[0]); // Obtenemos el dia
+			int mes = Integer.parseInt(dataSplit[1]); // Obtenemos el mes
+			int any = Integer.parseInt(dataSplit[2]); // Obtenemos el año
+			Data data = new Data(dia, mes, any); // Lo insertamos en la instancia de Data
 
-			NivellAigua nivell = new NivellAigua(data, nomEmb, poblacio, provincia, nivellAbs, percentatgeVolum, volum);
+			// Procesamos el nombre y la poblacion. FORMATO: 'nombre (poblacion)'
+			String nomEmbPobl = camps[1]; // Obtenemos el campo del nombre de la presa + poblacion
 
+			String[] embPoblSplit = nomEmbPobl.split("\\("); // ?????????
+			String nomEmb = embPoblSplit[0].trim(); // ?????????
+			String poblacio = embPoblSplit[1].replace(")", "").trim(); // ??????
+
+			// Procesamos el resto
+			String provincia = camps[2]; // obtenemos la provincia
+			double nivellAbs = Double.parseDouble(camps[3]); // obtenemos el nivel absoluto
+			double percentatgeVolum = Double.parseDouble(camps[4]); // obtenemos el porcentaje volumetrico
+			double volum = Double.parseDouble(camps[5]); // obtenemos el volumen
+
+			// Insertamos los datos en la instancia de NivellAigua
+			NivellAigua nivell = new NivellAigua(data, nomEmb, poblacio, provincia, 
+															 nivellAbs, percentatgeVolum, volum);
+
+			// Insertamos los datos en la lista
 			result.afegirDadesMesura(nivell);
 		}
-		f.close();
+		f.close(); // Cerramos el fichero .csv
 		return result;
 	}
 
-	public static void mostraMenu() {
-		System.out.println("\n\nOpcions del menu:");
-		System.out.println("\n\t1. Mostrar conjunt de mesures de la llista.");
-		System.out.println("\t2. Mostrar mesures d'una provincia entre dates.");
-		System.out.println("\t3. Consultar la primera mesura de la llista d'un cert embassament.");
-		System.out.println("\t4. Consultar la mesura amb percentatge de volum mes alt dels embassaments.");
-		System.out.println("\t5. Consultar del percentatge de volum mes baix.");
-		System.out.println("\t6. Consultar de quants embassaments tenim dades en una certa provincia.");
-		System.out.println("\t7. Calcular en quina de les dues províncies té un volum d'aigua mes alt.");
-		System.out.println("\t8. Consultar dades de mesura en un periode de temps.");
-		System.out.println("\t9. Eliminar conjunt de mesures dels embassaments d'una província.");
-		System.out.println("\t10. Sortir");
-		System.out.println("\n\t\t\tIndica opcio:\n");
+	// Metodo que muestra el menú de opciones por pantalla
+	private static void mostraMenu() {
+		System.out.println("\n\nOpcions del menu:\n");
+		System.out.println("  1. Mostrar conjunt de mesures de la llista.");
+		System.out.println("  2. Mostrar mesures d'una provincia entre dates.");
+		System.out.println("  3. Consultar la primera mesura de la llista d'un cert embassament.");
+		System.out.println("  4. Consultar la mesura amb percentatge de volum mes alt dels embassaments.");
+		System.out.println("  5. Consultar del percentatge de volum mes baix.");
+		System.out.println("  6. Consultar de quants embassaments tenim dades en una certa provincia.");
+		System.out.println("  7. Calcular en quina de les dues províncies té un volum d'aigua mes alt.");
+		System.out.println("  8. Consultar dades de mesura en un periode de temps.");
+		System.out.println("  9. Eliminar conjunt de mesures dels embassaments d'una província.");
+		System.out.println("  10. Sortir");
+		System.out.println("\n      Indica opcio: ");
 	}
 
+	// Metodo que convierte en datos una fecha. FORMATO: DD/MM/AAAA
 	private static Data convertirAData(String dataString){
 		String[] dataStringSplit = dataString.split("/");
 		int dia = Integer.parseInt(dataStringSplit[0]);
@@ -128,33 +127,56 @@ public class UsaLlistaNivellsAigua {
 		return new Data(dia, mes, any);
 	}
 
-	public static void opcio1(LlistaNivellsAigua dataset) {
-		System.out.println("Mesures de la llista:");
+	/** Metodo que muestra la lista completa del dataset
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio1(LlistaNivellsAigua dataset) {
 		System.out.println(dataset);
 	}
 
-	public static void opcio2(LlistaNivellsAigua dataset) {
-		System.out.println("\tIndica el nom de la provincia");
-		String nomProvincia = teclat.nextLine();
-		System.out.println("\tIndica data 1 (format: dia/mes/any)");
-		String inputData1 = teclat.nextLine();
+	/** Metodo que muestra medidas entre unas fechas concretas
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio2(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de la provincia: ");
+		String nomProvincia = teclat.next();
+
+		System.out.println("\tIndica data 1 (format: dia/mes/any): ");
+		String inputData1 = teclat.next();
 		Data data1 = convertirAData(inputData1);
-		System.out.println("\tIndica data 2 (format: dia/mes/any)");
-		String inputData2 = teclat.nextLine();
+
+		System.out.println("\tIndica data 2 (format: dia/mes/any): ");
+		String inputData2 = teclat.next();
 		Data data2 = convertirAData(inputData2);
-		LlistaNivellsAigua a;
-		a = dataset.consultaPorProvincia(nomProvincia.trim())
-				.consultaPorFechas(data1, data2);
+
+		LlistaNivellsAigua a = dataset
+										.consultaPorProvincia(nomProvincia)
+										.consultaPorFechas(data1, data2);
 		System.out.println(a);
 	}
 
-	public static void opcio3(LlistaNivellsAigua dataset) {
-		System.out.println("\tIndica el nom de l'embassament");
-		String nomEmbassament = teclat.nextLine();
-		System.out.println("Primera mesura de" + nomEmbassament + ":" + dataset.primeraMesura(nomEmbassament.trim()));
+	/** Metodo que muestra los datos de la primera medida
+	 * indicando el nombre del embalse.
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio3(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de l'embassament: ");
+		String nomEmbassament = teclat.next();
+
+		System.out.println("Primera mesura de " +nomEmbassament+ ": " 
+												+dataset.primeraMesura(nomEmbassament));
 	}
 
-	public static void opcio4(LlistaNivellsAigua dataset) {
+	/** Metodo que consulta la medida con el porcentaje de volumen mas alto
+	 * de los embalses de cada una de las províncias. Muestra la info
+	 * y comprueba si son del mismo año
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio4(LlistaNivellsAigua dataset) {
 		NivellAigua tarragona = dataset.consultaPorProvincia("Tarragona")
 					.copiaPorcentajeMasAlto();
     	NivellAigua barcelona = dataset.consultaPorProvincia("Barcelona")
@@ -165,48 +187,65 @@ public class UsaLlistaNivellsAigua {
 					.copiaPorcentajeMasAlto();
 
     	System.out.println("Percentatge de volum més alt per provincia:");
-    	System.out.println("Tarragona: " + tarragona);
-    	System.out.println("Barcelona: " + barcelona);
-    	System.out.println("Lleida: " + lleida);
-    	System.out.println("Girona: " + girona);
+    	System.out.println("Tarragona: " +tarragona);
+    	System.out.println("Barcelona: " +barcelona);
+    	System.out.println("Lleida: " +lleida);
+    	System.out.println("Girona: " +girona);
 
-		//falta ver si son del mismo año
+		// FALTA VER SI SON DEL MISMO AÑO
 	}
 
-	public static void opcio5(LlistaNivellsAigua dataset) {
+	/** Metodo que consulta los datos con el porcentaje mas bajo de la lista.
+	 * NO separamos por provincias
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio5(LlistaNivellsAigua dataset) {
 		NivellAigua percentMesBaix = dataset.copiaPorcentajeMasBajo();
-		System.out.println("Mesura amb percentatge de volum mes baix:" + percentMesBaix);
+		System.out.println("Mesura amb percentatge de volum mes baix: " +percentMesBaix);
 	}
 
-	public static void opcio6(LlistaNivellsAigua dataset) {
-		System.out.println("\tIndica el nom de la provincia");
-		String nomProvincia = teclat.nextLine();
-		LlistaNivellsAigua opcioSis;
-		opcioSis = dataset.consultaPorProvincia(nomProvincia.trim());
-		System.out.println("Hi han dades de" + opcioSis.getElem() + "elements de" + nomProvincia);
-		System.out.println("Nom dels embassaments:");
-		for(int i = 0; i < opcioSis.getElem(); i++) {
-			NivellAigua mesura;
-			//System.out.println(.getNomEmbassament);
-		}
+	/** Metodo que muestra de cuantos embalses tenemos datos de una provincia.
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio6(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de la provincia: ");
+		String nomProvincia = teclat.next();
+		
+		LlistaNivellsAigua listaAux = dataset.consultaPorProvincia(nomProvincia);
+		System.out.println("Hi han dades de " +listaAux.getElem()+ " elements de " +nomProvincia);
+
+		System.out.println("Nom dels embassaments: ");
+
+		// FALTA MOSTRAR LOS NOMBRES DE LOS EMBALSES
 	}
 
-	public static void opcio7(LlistaNivellsAigua dataset) {
-		System.out.println("\tIndica l'any (format: any)");
-    	int any = Integer.parseInt(teclat.nextLine());
+	/** Metodo que muestra en un año concreto que embalse tiene el
+	 * volumen mas alto entre dos provincias.
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio7(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica l'any (format: any): ");
+    	int any = Integer.parseInt(teclat.next());
 
-    	System.out.println("\tIndica el nom de la primera província");
-    	String provincia1 = teclat.nextLine();
-    	System.out.println("\tIndica el nom de la segona província");
-    	String provincia2 = teclat.nextLine();
+    	System.out.println("\tIndica el nom de la primera província: ");
+    	String provincia1 = teclat.next();
+
+    	System.out.println("\tIndica el nom de la segona província: ");
+    	String provincia2 = teclat.next();
 
 		Data dataInici = new Data(1, 1, any);
     	Data dataFi = new Data(31, 12, any);
 
-		LlistaNivellsAigua mesuresProvincia1 = dataset.consultaPorFechas(dataInici, dataFi)
-                                    .consultaPorProvincia(provincia1.trim());
-		LlistaNivellsAigua mesuresProvincia2 = dataset.consultaPorFechas(dataInici, dataFi)
-                                    .consultaPorProvincia(provincia2.trim());
+		LlistaNivellsAigua mesuresProvincia1 = dataset
+												.consultaPorFechas(dataInici, dataFi)
+                                    .consultaPorProvincia(provincia1);
+
+		LlistaNivellsAigua mesuresProvincia2 = dataset
+												.consultaPorFechas(dataInici, dataFi)
+                                    .consultaPorProvincia(provincia2);
 
     	double volumMaxProvincia1 = mesuresProvincia1.copiaVolumenMasAlto().getVolum();
     	double volumMaxProvincia2 = mesuresProvincia2.copiaVolumenMasAlto().getVolum();
@@ -218,13 +257,17 @@ public class UsaLlistaNivellsAigua {
         	provinciaAmbVolumMesAlt = provincia2;
     	}
 		
-		System.out.println("Per l'any " + any + ":");
-    	System.out.println("A " + provincia1 + ", volum màxim: " + volumMaxProvincia1);
-    	System.out.println("A " + provincia2 + ", volum màxim: " + volumMaxProvincia2);
-    	System.out.println("La província amb el volum més alt és: " + provinciaAmbVolumMesAlt);
+		System.out.println("Per l'any " +any+ ":\n");
+    	System.out.println("  A " +provincia1+ ", volum màxim: " +volumMaxProvincia1);
+    	System.out.println("  A " +provincia2+ ", volum màxim: " +volumMaxProvincia2);
+    	System.out.println("La província amb el volum més alt és: " +provinciaAmbVolumMesAlt);
 	}
 
-	public static void opcio8(LlistaNivellsAigua dataset) {
+	/** Consultar datos de medida en una franja temporal
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio8(LlistaNivellsAigua dataset) {
 		System.out.println("\tIndica la primera data (format: dia/mes/any)");
     	String inputdata1 = teclat.nextLine();
     	Data data1 = convertirAData(inputdata1);
@@ -232,12 +275,23 @@ public class UsaLlistaNivellsAigua {
     	System.out.println("\tIndica la segona data (format: dia/mes/any)");
     	String inputdata2 = teclat.nextLine();
     	Data data2 = convertirAData(inputdata2);
+
     	LlistaNivellsAigua mesuresPeriode = dataset.consultaPorFechas(data1, data2);
 		System.out.println(mesuresPeriode);
 	}
 
-	public static void opcio9(LlistaNivellsAigua dataset) {
+	/** Eliminamos un conjunto de medidas de una provincia.
+	 * Primero: mostramos los datos de la provincia
+	 * Segundo: llamamos al metodo de eliminar
+	 * Tercero: mostramos los datos de la provincia (debe estar vacio)
+	 * 
+	 * @param dataset la lista
+	 */
+	private static void opcio9(LlistaNivellsAigua dataset) {
+		System.out.println("\tIndica el nom de la provincia: ");
+		String nomProvincia = teclat.next();
 
+		// ACABAR opcio9
 	}
 
 }
