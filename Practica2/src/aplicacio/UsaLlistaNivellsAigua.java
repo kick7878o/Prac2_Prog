@@ -176,7 +176,7 @@ public class UsaLlistaNivellsAigua {
 		System.out.print("  Indica el nom de l'embassament: ");
 		String nomEmbassament = teclat.next(); // NO LEE MAS DE 1 PALABRA
 
-		System.out.println("Primera mesura de " +nomEmbassament+ ": " 
+		System.out.println("   Primera mesura de " +nomEmbassament+ ": " 
 												+dataset.primeraMesura(nomEmbassament));
 	}
 
@@ -200,11 +200,11 @@ public class UsaLlistaNivellsAigua {
     	NivellAigua girona = dataset.consultaPorProvincia("Girona")
 									   	 .copiaPorcentajeMasAlto();
 
-    	System.out.println("Percentatge de volum més alt per provincia:");
-    	System.out.println("Tarragona: " +tarragona);
-    	System.out.println("Barcelona: " +barcelona);
-    	System.out.println("Lleida: " +lleida);
-    	System.out.println("Girona: " +girona);
+    	System.out.println("  Percentatge de volum més alt per provincia:");
+    	System.out.println("   Tarragona: " +tarragona);
+    	System.out.println("   Barcelona: " +barcelona);
+    	System.out.println("   Lleida: " +lleida);
+    	System.out.println("   Girona: " +girona);
 
 		// FALTA VER SI SON DEL MISMO AÑO
 	}
@@ -217,7 +217,7 @@ public class UsaLlistaNivellsAigua {
 	private static void opcio5(LlistaNivellsAigua dataset) {
 		System.out.println("\n\n==== OPCION 5 SELECCIONADO ====\n");
 		NivellAigua percentMesBaix = dataset.copiaPorcentajeMasBajo();
-		System.out.println("Mesura amb percentatge de volum mes baix: " +percentMesBaix);
+		System.out.println("  Mesura amb percentatge de volum mes baix: " +percentMesBaix);
 	}
 
 	/** Metodo que muestra de cuantos embalses tenemos datos de una provincia.
@@ -226,13 +226,13 @@ public class UsaLlistaNivellsAigua {
 	 */
 	private static void opcio6(LlistaNivellsAigua dataset) {
 		System.out.println("\n\n==== OPCION 6 SELECCIONADO ====\n");
-		System.out.print("\tIndica el nom de la provincia: ");
+		System.out.print("  Indica el nom de la provincia: ");
 		String nomProvincia = teclat.next();
 		
 		LlistaNivellsAigua listaAux = dataset.consultaPorProvincia(nomProvincia);
-		System.out.println("Hi han dades amb " +listaAux.getElem()+ " elements de " +nomProvincia);
+		System.out.println("  Hi han dades amb " +listaAux.getElem()+ " elements de " +nomProvincia);
 
-		System.out.println("Nom dels embassaments: ");
+		System.out.println("  Nom dels embassaments: ");
 
 		// FALTA MOSTRAR LOS NOMBRES DE LOS EMBALSES
 	}
@@ -287,7 +287,7 @@ public class UsaLlistaNivellsAigua {
     	String inputdata1 = teclat.next();
     	Data data1 = convertirAData(inputdata1);
 
-    	System.out.println("\tIndica la segona data (format: dia/mes/any): ");
+    	System.out.println("  Indica la segona data (format: dia/mes/any): ");
     	String inputdata2 = teclat.next();
     	Data data2 = convertirAData(inputdata2);
 
