@@ -1,11 +1,9 @@
 package dades;
 
 public class LlistaNivellsAigua {
-
    private NivellAigua[] listaLvl;
    private int nElem;
    
-
    /** Constructor de la lista de medidas de agua
     * @param tamany
     */
@@ -30,6 +28,32 @@ public class LlistaNivellsAigua {
          listaLvl[nElem] = dades.copia();
          nElem++;
       }
+   }
+
+   /** Metodo que consulta los datos de una posicion concreta
+    * 
+    * @param pos posicion a consultar
+    * @return los datos o null
+    */
+   public NivellAigua consultaPosicio (int pos) {
+      if (pos < nElem && pos >= 0)
+         return listaLvl[pos];
+
+      return null;
+   }
+
+   /** Metodo que devuelve un String con todos los datos de la lista
+    * 
+    * @return cadena con todos los datos de la lista
+    */
+   public String toString() {
+      String aux = "Lista medidas => Elementos: " +nElem+ "\n";
+
+      for (int i=0; i < nElem; i++) {
+         aux += "\n  [" +i+ "] " +listaLvl[i]+ "\n\n";
+      }
+
+      return aux;
    }
 
    /** Metodo que devuelve la primera medida de una presa por parametro
@@ -81,20 +105,6 @@ public class LlistaNivellsAigua {
       return aux.copia();
    }
 
-   /** Metodo que devuelve un String con todos los datos de la lista
-    * 
-    * @return cadena con todos los datos de la lista
-    */
-   public String toString() {
-      String aux = "Lista medidas => Elementos: " +nElem;
-
-      for (int i=0; i < nElem; i++) {
-         aux += "\n\t[" +i+ "] " +listaLvl[i];
-      }
-
-      return aux;
-   }
-
    /** Metodo que duplica el volumen mas alto de la lista
     * @return una copia de la medida con el volumen mas alto
     */
@@ -125,7 +135,7 @@ public class LlistaNivellsAigua {
 
       // Iteramos buscando si coinciden las provincias
       for (int i=0; i < nElem; i++) {
-         if (listaLvl[i].esTrobaEnAquestaProvincia(provincia))
+         if (listaLvl[i].esTrobaEnAquestaProvincia(provincia)) // si coinciden lo añadimos a la lista
             aux.afegirDadesMesura(listaLvl[i].copia());
       }
 
@@ -140,7 +150,7 @@ public class LlistaNivellsAigua {
     * @return lista con los datos entre fechas
     */
    public LlistaNivellsAigua consultaPorFechas(Data d1, Data d2) {
-      LlistaNivellsAigua aux = new LlistaNivellsAigua(nElem); // Nova llista
+      LlistaNivellsAigua aux = new LlistaNivellsAigua(nElem); // Nueva lista
 
       // Iteramos buscando si estan entre las fechas
       for (int i=0; i < nElem; i++) {
@@ -153,9 +163,9 @@ public class LlistaNivellsAigua {
 
    /** Metodo que elimina un conjunto segun el nombre de la presa
     * NOTA: no deja posiciones vacías
-    * @param nomPresa
+    * @param nomPresa el nombre
     */
-   public void eliminarConjunt(String nomPresa) {
+   public void eliminarConjuntEmbassament(String nomPresa) {
       int indiceAux = 0; // Indice que rastrea la nueva posicion en la lista
 
       // Iteramos la lista original
@@ -163,6 +173,25 @@ public class LlistaNivellsAigua {
          // Verificamos si el nombre del embalse NO coincide con el nombre proporcionado.
          //  Si coincide, la medida no está asociada al embalse a eliminar.
          if (!listaLvl[i].esAquestEmbassament(nomPresa)) {
+            listaLvl[indiceAux] = listaLvl[i];
+            indiceAux++; // Sirve para copiar la medida en la nueva posicion en la lista
+         }
+      }
+      nElem = indiceAux; // Nos aseguramos que el nElem refleje bien las medidas restantes
+   }
+
+   /** Metodo que elimina un conjunto segun la provincia
+    * NOTA: no deja posiciones vacías
+    * @param nomPresa el nombre
+    */
+   public void eliminarConjuntProvincia(String nProv) {
+      int indiceAux = 0; // Indice que rastrea la nueva posicion en la lista
+
+      // Iteramos la lista original
+      for (int i=0; i < nElem; i++) {
+         // Verificamos si el nombre del embalse NO coincide con el nombre proporcionado.
+         //  Si coincide, la medida no está asociada al embalse a eliminar.
+         if (!listaLvl[i].esTrobaEnAquestaProvincia(nProv)) {
             listaLvl[indiceAux] = listaLvl[i];
             indiceAux++; // Sirve para copiar la medida en la nueva posicion en la lista
          }
