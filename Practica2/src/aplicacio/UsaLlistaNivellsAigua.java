@@ -1,14 +1,16 @@
 package aplicacio;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
+
 import dades.*;
 
 public class UsaLlistaNivellsAigua {
 	static Scanner teclat = new Scanner(System.in);
-
-	public static void main(String[] args) throws FileNotFoundException {
+	// Esto servirá para leer más de una palabra por teclado
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	
+	public static void main(String[] args) throws IOException {
 		System.out.println("Indica el número de línies a llegir del fitxer (màxim 78282)");
 		int numLinies = Integer.parseInt(teclat.next());
 		LlistaNivellsAigua dataset = llegirLiniesFitxer(numLinies);
@@ -172,13 +174,14 @@ public class UsaLlistaNivellsAigua {
 	 * indicando el nombre del embalse.
 	 * 
 	 * @param dataset la lista
+	 * @throws IOException
 	 */
-	private static void opcio3(LlistaNivellsAigua dataset) {
+	private static void opcio3(LlistaNivellsAigua dataset) throws IOException {
 		System.out.println("\n\n==== OPCION 3 SELECCIONADO ====\n");
 		System.out.print("  Indica el nom de l'embassament: ");
-		String nomEmbassament = teclat.next(); // NO LEE MAS DE 1 PALABRA
+		String nomEmbassament = br.readLine();
 
-		System.out.println("   Primera mesura de " +nomEmbassament+ ": " 
+		System.out.println("\n\n   Primera mesura de " +nomEmbassament+ ": " 
 												+dataset.primeraMesura(nomEmbassament));
 	}
 
