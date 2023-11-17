@@ -179,4 +179,23 @@ public class LlistaNivellsAigua {
       }
       nElem = indiceAux; // Nos aseguramos que el nElem refleje bien las medidas restantes
    }
+
+   /** Metodo que elimina un conjunto segun el nombre de la presa
+    * NOTA: no deja posiciones vacías
+    * @param nomPresa el nombre
+    */
+   public void eliminarConjuntProvincia(String nomProv) {
+      int indiceAux = 0; // Indice que rastrea la nueva posicion en la lista
+
+      // Iteramos la lista original
+      for (int i=0; i < nElem; i++) {
+         // Verificamos si el nombre del embalse NO coincide con el nombre proporcionado.
+         //  Si coincide, la medida no está asociada al embalse a eliminar.
+         if (!listaLvl[i].esTrobaEnAquestaProvincia(nomProv)) {
+            listaLvl[indiceAux] = listaLvl[i];
+            indiceAux++; // Sirve para copiar la medida en la nueva posicion en la lista
+         }
+      }
+      nElem = indiceAux; // Nos aseguramos que el nElem refleje bien las medidas restantes
+   }
 }

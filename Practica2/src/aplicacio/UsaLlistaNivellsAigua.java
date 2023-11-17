@@ -107,7 +107,7 @@ public class UsaLlistaNivellsAigua {
 
 	// Metodo que muestra el menú de opciones por pantalla
 	private static void mostraMenu() {
-		System.out.println("\n\nOpcions del menu:\n");
+		System.out.println("\n\n\nOpcions del menu:\n");
 		System.out.println("  1. Mostrar conjunt de mesures de la llista.");
 		System.out.println("  2. Mostrar mesures d'una provincia entre dates.");
 		System.out.println("  3. Consultar la primera mesura de la llista d'un cert embassament.");
@@ -199,8 +199,8 @@ public class UsaLlistaNivellsAigua {
 			// Consultar la medida con el porcentaje de volumen mas alto de la provincia
 			NivellAigua medidaMaxima = dataset.consultaPorProvincia(prov).copiaPorcentajeMasAlto();
 
+			// Comprobamos si hay o no datos y mostramos el resultado
 			if (medidaMaxima != null) {
-				// Mostramos la informacion
 				System.out.println("  Medida con porcentaje mas alto de " +prov+ ": " +medidaMaxima);
 				System.out.println("\n  Lista de datos: " +medidaMaxima);
 			} else
@@ -264,12 +264,15 @@ public class UsaLlistaNivellsAigua {
 		Data dataInici = new Data(1, 1, any);
     	Data dataFi = new Data(31, 12, any);
 
-		LlistaNivellsAigua mesuresProvincia1 = dataset.consultaPorFechas(dataInici, dataFi)
-                                    					 .consultaPorProvincia(provincia1);
+		// Filtramos la lista por provincias y, de la lista filtrada filtramos por fecha
+		LlistaNivellsAigua mesuresProvincia1 = dataset.consultaPorProvincia(provincia1)
+																	 .consultaPorFechas(dataInici, dataFi);
+                                    					 
 
-		LlistaNivellsAigua mesuresProvincia2 = dataset.consultaPorFechas(dataInici, dataFi)
-                                    					 .consultaPorProvincia(provincia2);
-
+		LlistaNivellsAigua mesuresProvincia2 = dataset.consultaPorProvincia(provincia2)
+																	 .consultaPorFechas(dataInici, dataFi);
+                                    					 
+		// Obtenemos el volumen maximo de las dos provincias													
     	double volumMaxProvincia1 = mesuresProvincia1.copiaVolumenMasAlto().getVolum();
     	double volumMaxProvincia2 = mesuresProvincia2.copiaVolumenMasAlto().getVolum();
 
@@ -280,10 +283,10 @@ public class UsaLlistaNivellsAigua {
 			provinciaAmbVolumMesAlt = provincia2;
     	
 		
-		System.out.println(" Per l'any " +any+ ":");
-    	System.out.println("  A " +provincia1+ ", volum màxim: " +volumMaxProvincia1);
-    	System.out.println("  A " +provincia2+ ", volum màxim: " +volumMaxProvincia2);
-    	System.out.println("   La província amb el volum més alt és: " +provinciaAmbVolumMesAlt);
+		System.out.println("\n\tPer l'any " +any+ ":");
+    	System.out.println("\t A " +provincia1+ ", volum màxim: " +volumMaxProvincia1);
+    	System.out.println("\t A " +provincia2+ ", volum màxim: " +volumMaxProvincia2);
+    	System.out.println("\t La província amb el volum més alt és: " +provinciaAmbVolumMesAlt);
 	}
 
 	/** Consultar datos de medida en una franja temporal
@@ -321,12 +324,11 @@ public class UsaLlistaNivellsAigua {
 		System.out.println(dataset.consultaPorProvincia(nomProvincia));
 
 		// Eliminamos conjunto
-		
+		dataset.eliminarConjuntProvincia(nomProvincia);
 
 		// Mostramos la lista despues de eliminar
 		System.out.println("\n  Datos despues de eliminar la provincia: " +nomProvincia);
-		
-		System.out.println();
+		System.out.println(dataset.consultaPorProvincia(nomProvincia));
 	}
 
 }
