@@ -222,8 +222,7 @@ public class UsaLlistaNivellsAigua {
 
 			// Comprobamos si hay o no datos y mostramos el resultado
 			if (medidaMaxima != null) {
-				System.out.println("  Medida con porcentaje mas alto de " +prov+ ": " +medidaMaxima);
-				System.out.println("\n  Lista de datos: " +medidaMaxima);
+				System.out.println("\n\n-  Medida con porcentaje mas alto de " +prov+ ": " +medidaMaxima);
 			} else
 				System.out.println("  No hay datos para la provincia de " +prov);
 		}
@@ -316,11 +315,11 @@ public class UsaLlistaNivellsAigua {
 	 */
 	private static void opcio8(LlistaNivellsAigua dataset) {
 		System.out.println("\n\n==== OPCION 8 SELECCIONADO ====\n");
-		System.out.println("  Indica la primera fecha (format: dia/mes/any): ");
+		System.out.print("  Indica la primera fecha (format: dia/mes/any): ");
     	String inputdata1 = teclat.next();
     	Data data1 = convertirAData(inputdata1);
 
-    	System.out.println("  Indica la segona fecha (format: dia/mes/any): ");
+    	System.out.print("  Indica la segona fecha (format: dia/mes/any): ");
     	String inputdata2 = teclat.next();
     	Data data2 = convertirAData(inputdata2);
 
