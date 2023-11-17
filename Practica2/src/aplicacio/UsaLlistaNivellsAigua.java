@@ -161,9 +161,11 @@ public class UsaLlistaNivellsAigua {
 			Data data2 = convertirAData(inputData2);
 
 		// Obtenemos la lista segun la provincia y fechas dadas
-		LlistaNivellsAigua aux = dataset.consultaPorProvincia(nomProvincia)
-												  .consultaPorFechas(data1, data2);
-		System.out.println(aux);
+		LlistaNivellsAigua medidasProvincia = dataset.consultaPorProvincia(nomProvincia);
+		LlistaNivellsAigua medidasFechas = medidasProvincia.consultaPorFechas(data1, data2);
+
+		System.out.println("Segun la provincia: " +nomProvincia+ " y las fechas Ini: " +data1+ " y Fin " 
+								 +data2+ " tenemos esta lista: " +medidasFechas);
 	}
 
 	/** Metodo que muestra los datos de la primera medida
@@ -188,25 +190,19 @@ public class UsaLlistaNivellsAigua {
 	 */
 	private static void opcio4(LlistaNivellsAigua dataset) {
 		System.out.println("\n\n==== OPCION 4 SELECCIONADO ====\n");
-		NivellAigua tarragona = dataset.consultaPorProvincia("Tarragona")
-												 .copiaPorcentajeMasAlto();
+		String[] provincias = {"Tarragona", "Barcelona", "Lleida", "Girona"};
 
-    	NivellAigua barcelona = dataset.consultaPorProvincia("Barcelona")
-												 .copiaPorcentajeMasAlto();
+		for (String prov : provincias) {
+			// Consultar la medida con el porcentaje de volumen mas alto de la provincia
+			NivellAigua medidaMaxima = dataset.consultaPorProvincia(prov).copiaPorcentajeMasAlto();
 
-    	NivellAigua lleida = dataset.consultaPorProvincia("Lleida")
-					   					 .copiaPorcentajeMasAlto();
-											 
-    	NivellAigua girona = dataset.consultaPorProvincia("Girona")
-									   	 .copiaPorcentajeMasAlto();
-
-    	System.out.println("  Percentatge de volum més alt per provincia:");
-    	System.out.println("   Tarragona: " +tarragona);
-    	System.out.println("   Barcelona: " +barcelona);
-    	System.out.println("   Lleida: " +lleida);
-    	System.out.println("   Girona: " +girona);
-
-		// FALTA VER SI SON DEL MISMO AÑO
+			if (medidaMaxima != null) {
+				// Mostramos la informacion
+				System.out.println("  Medida con porcentaje mas alto de " +prov+ ": " +medidaMaxima);
+				System.out.println("\n  Lista de datos: " +medidaMaxima);
+			} else
+				System.out.println("  No hay datos para la provincia de " +prov);
+		}
 	}
 
 	/** Metodo que consulta los datos con el porcentaje mas bajo de la lista.
@@ -229,12 +225,20 @@ public class UsaLlistaNivellsAigua {
 		System.out.print("  Indica el nom de la provincia: ");
 		String nomProvincia = teclat.next();
 		
+		// Creamos una lista auxiliar filtrado por provincias
 		LlistaNivellsAigua listaAux = dataset.consultaPorProvincia(nomProvincia);
-		System.out.println("  Hi han dades amb " +listaAux.getElem()+ " elements de " +nomProvincia);
 
-		System.out.println("  Nom dels embassaments: ");
+		// Si hay elementos, tenemos datos
+		if (listaAux.getElem() > 0) {
+			System.out.println("  Hay datos conteniendo " +listaAux.getElem()+ " elements de " +nomProvincia);
 
-		// FALTA MOSTRAR LOS NOMBRES DE LOS EMBALSES
+			// Iterador que mostrará el nombre del embalse de cada posicion.
+			for (int i=0; i < listaAux.getElem(); i++) {
+				NivellAigua medida = listaAux.consultaPosicio(i);
+				System.out.println("  Nombre del embalse: " +medida.getNomEmbassament());
+			}
+		} else	
+			System.out.println("  No tenemos datos de embalses de " +nomProvincia);
 	}
 
 	/** Metodo que muestra en un año concreto que embalse tiene el
@@ -267,8 +271,10 @@ public class UsaLlistaNivellsAigua {
     	double volumMaxProvincia2 = mesuresProvincia2.copiaVolumenMasAlto().getVolum();
 
 		String provinciaAmbVolumMesAlt;
-    	if (volumMaxProvincia1 > volumMaxProvincia2) provinciaAmbVolumMesAlt = provincia1;
-    	else provinciaAmbVolumMesAlt = provincia2;
+    	if (volumMaxProvincia1 > volumMaxProvincia2) 
+			provinciaAmbVolumMesAlt = provincia1;
+    	else 
+			provinciaAmbVolumMesAlt = provincia2;
     	
 		
 		System.out.println(" Per l'any " +any+ ":");
@@ -283,11 +289,11 @@ public class UsaLlistaNivellsAigua {
 	 */
 	private static void opcio8(LlistaNivellsAigua dataset) {
 		System.out.println("\n\n==== OPCION 8 SELECCIONADO ====\n");
-		System.out.println("  Indica la primera data (format: dia/mes/any): ");
+		System.out.println("  Indica la primera fecha (format: dia/mes/any): ");
     	String inputdata1 = teclat.next();
     	Data data1 = convertirAData(inputdata1);
 
-    	System.out.println("  Indica la segona data (format: dia/mes/any): ");
+    	System.out.println("  Indica la segona fecha (format: dia/mes/any): ");
     	String inputdata2 = teclat.next();
     	Data data2 = convertirAData(inputdata2);
 
@@ -307,12 +313,17 @@ public class UsaLlistaNivellsAigua {
 		System.out.print("  Indica el nom de la provincia: ");
 		String nomProvincia = teclat.next();
 
+		// Mostramos lista filtrada antes de eliminar
 		System.out.println("\n  Datos de la provincia: " +nomProvincia);
 		System.out.println(dataset.consultaPorProvincia(nomProvincia));
 
+		// Eliminamos conjunto
+		
+
+		// Mostramos la lista despues de eliminar
 		System.out.println("\n  Datos despues de eliminar la provincia: " +nomProvincia);
-		dataset.eliminarConjuntProvincia(nomProvincia);
-		System.out.println(dataset.consultaPorProvincia(nomProvincia));
+		
+		System.out.println();
 	}
 
 }
