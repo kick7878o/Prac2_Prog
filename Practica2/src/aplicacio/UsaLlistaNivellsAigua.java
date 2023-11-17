@@ -137,6 +137,22 @@ public class UsaLlistaNivellsAigua {
 		return new Data(dia, mes, any);
 	}
 
+	/** Metodo auxiliar para comprobar que las fechas introducidas estén de menor a mayor
+	 * 
+	 * @param d1 fecha 1 introducida
+	 * @param d2 fecha 2 introducida
+	 */
+	private static Data[] validaFechas (Data d1, Data d2) {
+		Data[] fechas = new Data[]{d1, d2};
+		if (!d1.esDataInferiorOigual(d2)) {
+			System.out.println("\n  Las fechas introducidas están al reves, intercambiando... !!\n");
+			Data aux = fechas[0];
+			fechas[0] = fechas[1];
+			fechas[1] = aux;
+		}
+		return fechas;
+	}
+
 	/** Metodo que muestra la lista completa del dataset
 	 * 
 	 * @param dataset la lista
@@ -162,12 +178,17 @@ public class UsaLlistaNivellsAigua {
 			String inputData2 = teclat.next();
 			Data data2 = convertirAData(inputData2);
 
-		// Obtenemos la lista segun la provincia y fechas dadas
-		LlistaNivellsAigua medidasProvincia = dataset.consultaPorProvincia(nomProvincia);
-		LlistaNivellsAigua medidasFechas = medidasProvincia.consultaPorFechas(data1, data2);
+		// Comprobamos que data1 < data2
+		Data[] validaFecha = validaFechas(data1, data2);
+			data1 = validaFecha[0];
+			data2 = validaFecha[1];
 
-		System.out.println("Segun la provincia: " +nomProvincia+ " y las fechas Ini: " +data1+ " y Fin " 
-								 +data2+ " tenemos esta lista: " +medidasFechas);
+		// Obtenemos la lista segun la provincia y fechas dadas
+		LlistaNivellsAigua medidasProvincia = dataset.consultaPorProvincia(nomProvincia)
+																	.consultaPorFechas(data1, data2);
+
+		System.out.println("Segun la provincia de " +nomProvincia+ " y las fechas Ini: " +data1+ " y Fin " 
+								 +data2+ " tenemos esta lista: " +medidasProvincia);
 	}
 
 	/** Metodo que muestra los datos de la primera medida
@@ -302,6 +323,11 @@ public class UsaLlistaNivellsAigua {
     	System.out.println("  Indica la segona fecha (format: dia/mes/any): ");
     	String inputdata2 = teclat.next();
     	Data data2 = convertirAData(inputdata2);
+
+		// Comprobamos que data1 < data2
+		Data[] validaFecha = validaFechas(data1, data2);
+			data1 = validaFecha[0];
+			data2 = validaFecha[1];
 
     	LlistaNivellsAigua mesuresPeriode = dataset.consultaPorFechas(data1, data2);
 		System.out.println(mesuresPeriode);
